@@ -44,9 +44,10 @@ class _MainPageState extends State<MainPage> {
   DialogBox _dialogBox = DialogBox(setTimer: (() {}));
   int _timeLeftSeconds = 0;
   int _timeLeftMinutes = 25;
-
+  final String _initialText = "Start new Pomodoro!";
+  String _promptText = "Start new Pomodoro!";
   // To start the timer
-  void _startTimer() {
+  void _startPomodoroTimer() {
     if (!_timer.isActive) {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (_timeLeftSeconds > 0) {
@@ -61,9 +62,20 @@ class _MainPageState extends State<MainPage> {
         }
         if (_timeLeftMinutes == 0 && _timeLeftSeconds == 0) {
           timer.cancel();
+          _takeBreak();
         }
       });
     }
+  }
+
+  // Create a new page with different mood which will only contain the break time and functionality.
+  void _takeBreak() {
+    setState(() {
+      
+      _promptText = "Good job! Now take a quick break! \n Come back stronger than before!";
+      _timeLeftSeconds = 0;
+      _timeLeftMinutes = 5;
+    });
   }
 
   // To stop the timer
@@ -75,6 +87,7 @@ class _MainPageState extends State<MainPage> {
   void _resetTimer() {
     _stopTimer();
     setState(() {
+      _promptText = _initialText;
       _timeLeftSeconds = 0;
       _timeLeftMinutes = 25;
     });
@@ -91,18 +104,17 @@ class _MainPageState extends State<MainPage> {
 
   // TODO edit the timer
   void _editTimer() {
-    if(!_timer.isActive){
+    if (!_timer.isActive) {
       _dialogBox = DialogBox(
-          setTimer: _setTimer,
-        );
-    showDialog(
-      context: context,
-      builder: ((context) {
-        return _dialogBox;
-      }),
-    );
+        setTimer: _setTimer,
+      );
+      showDialog(
+        context: context,
+        builder: ((context) {
+          return _dialogBox;
+        }),
+      );
     }
-    
   }
 
   @override
@@ -133,11 +145,15 @@ class _MainPageState extends State<MainPage> {
                         const TextStyle(fontSize: 100, color: Colors.white),
                   )),
               MainButtons(
-                startTimer: _startTimer,
+                startTimer: _startPomodoroTimer,
                 stopTimer: _stopTimer,
                 resetTimer: _resetTimer,
                 editTimer: _editTimer,
               ),
+              Text(_promptText,
+                  style: GoogleFonts.rowdies(
+                    textStyle: const TextStyle(color: Colors.white, fontSize: 20),
+                  ))
             ],
           ),
         ),
