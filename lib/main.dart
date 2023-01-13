@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pomodoro_app/break_page.dart';
 import 'package:pomodoro_app/dialog_box_edit.dart';
 import 'package:pomodoro_app/mainButtons.dart';
 
@@ -70,12 +72,9 @@ class _MainPageState extends State<MainPage> {
 
   // Create a new page with different mood which will only contain the break time and functionality.
   void _takeBreak() {
-    setState(() {
-      
-      _promptText = "Good job! Now take a quick break! \n Come back stronger than before!";
-      _timeLeftSeconds = 0;
-      _timeLeftMinutes = 5;
-    });
+    Navigator.of(context).push(MaterialPageRoute<void>(builder: (context){
+      return BreakPage();
+    }));
   }
 
   // To stop the timer
