@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pomodoro_app/break_page.dart';
 import 'package:pomodoro_app/dialog_box_edit.dart';
 import 'package:pomodoro_app/mainButtons.dart';
+import 'package:pomodoro_app/menu_drawer.dart';
 
 void main() {
   // sets the preferred orientation as to not be able to enter landscape mode
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const MainPage(),
+      home: MainPage(),
     );
   }
 }
@@ -46,8 +48,11 @@ class _MainPageState extends State<MainPage> {
   DialogBox _dialogBox = DialogBox(setTimer: (() {}));
   int _timeLeftSeconds = 0;
   int _timeLeftMinutes = 25;
-  final String _initialText = "Start new Pomodoro!";
-  String _promptText = "Start new Pomodoro!";
+  final String _initialText = "Start a new Pomodoro!";
+  String _promptText = "Start a new Pomodoro!";
+
+
+
   // To start the timer
   void _startPomodoroTimer() {
     if (!_timer.isActive) {
@@ -63,7 +68,13 @@ class _MainPageState extends State<MainPage> {
           });
         }
         if (_timeLeftMinutes == 0 && _timeLeftSeconds == 0) {
-          timer.cancel();
+          final player = AudioCache();
+          player.play("audio/alarm.mp3");
+          setState(() {
+            _timer.cancel();
+            _timeLeftMinutes = 25;
+            _timeLeftSeconds = 0;
+          });
           _takeBreak();
         }
       });
@@ -129,7 +140,9 @@ class _MainPageState extends State<MainPage> {
             textStyle: TextStyle(color: Colors.white),
           ),
         ),
+        
       ),
+      drawer: MenuDrawer(),
       body: Center(
         child: Container(
           child: Column(

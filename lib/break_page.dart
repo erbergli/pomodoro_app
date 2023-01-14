@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:ffi';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -16,23 +18,51 @@ class _BreakPageState extends State<BreakPage> {
   Timer _timer = Timer(Duration(seconds: 1), (){});
   int _timeLeftMinutes = 5;
   int _timeLeftSeconds = 0;
+  // add buttons so that you can start timer manually if wanted
+  _BreakPageState(){
+    _startTimer();
+  }
+
+  void _startTimer(){
+        _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+     
+        if (_timeLeftSeconds > 0) {
+          setState(() {
+            _timeLeftSeconds--;
+          });
+        } else {
+          setState(() {
+            _timeLeftSeconds = 59;
+            _timeLeftMinutes--;
+          });
+        }
+        if (_timesUp()) {
+          _cancelBreak();
+        }
+      });
+  }
+
+  bool _timesUp() {
+    return (_timeLeftMinutes == 0 && _timeLeftSeconds == 0);
+  }
 
   void _cancelBreak() {
     _timer.cancel();
     Navigator.of(context).pop();
   }
 
-  void _cancel() {
-    if(_timeLeftSeconds == 0 && _timeLeftMinutes == 0){
-      Navigator.of(context).pop();
-    }
-  }
+  // void _cancel() {
+  //   if(_timeLeftSeconds == 0 && _timeLeftMinutes == 0){
+  //     Navigator.of(context).pop();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(166, 40, 61, 248),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
           "Pomodoro Timer",
