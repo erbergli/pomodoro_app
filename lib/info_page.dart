@@ -21,8 +21,9 @@ class InfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red[400],
+      backgroundColor: Colors.deepPurple[400],
       appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
         elevation: 0,
         centerTitle: true,
         title: Text("About Pomodoro", style: _style,),

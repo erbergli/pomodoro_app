@@ -63,7 +63,8 @@ class _BreakPageState extends State<BreakPage> {
 
   void _cancelBreak() {
     _timer.cancel();
-    Navigator.of(context).pop();
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    
   }
 
   // void _cancel() {

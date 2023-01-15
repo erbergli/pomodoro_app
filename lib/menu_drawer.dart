@@ -47,6 +47,7 @@ class MenuDrawer extends StatelessWidget {
                 },
               ),
             ),
+            Divider(thickness: 2,),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
@@ -56,16 +57,17 @@ class MenuDrawer extends StatelessWidget {
                   style: _style,
                 ),
                 onTap: () {
-                  // Navigator.of(context).popUntil((route) => route.isFirst);
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: ((context) => BreakPage())
-                      ), ((route) => route.isFirst)
-                  );
+                  Navigator.of(context).push(MaterialPageRoute(builder: ((context) => BreakPage())));
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //   MaterialPageRoute(
+                  //     builder: ((context) => BreakPage())
+                  //     ), ((route) => route.isFirst)
+                  // );
                   
                 },
               ),
             ),
+            Divider(thickness: 2,),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
@@ -84,8 +86,10 @@ class MenuDrawer extends StatelessWidget {
                   
 
                 },
+                
               ),
             ),
+            Divider(thickness: 2,),
           ],
         ));
   }
