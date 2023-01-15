@@ -15,20 +15,30 @@ class BreakPage extends StatefulWidget {
 }
 
 class _BreakPageState extends State<BreakPage> {
-  Timer _timer = Timer(Duration(seconds: 1), (){});
+  Timer _timer = Timer(Duration(seconds: 1), () {});
   int _timeLeftMinutes = 5;
   int _timeLeftSeconds = 0;
   // add buttons so that you can start timer manually if wanted
-  _BreakPageState(){
+  _BreakPageState() {
     _startTimer();
   }
 
-  void _startTimer(){
-        _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-     
+  @override
+  void setState(VoidCallback fn) {
+    
+    if(mounted){  
+      super.setState(fn);
+    }
+    
+  }
+
+  void _startTimer() {
+    if (!_timer.isActive && mounted == true) {
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (_timeLeftSeconds > 0) {
           setState(() {
             _timeLeftSeconds--;
+            
           });
         } else {
           setState(() {
@@ -40,6 +50,11 @@ class _BreakPageState extends State<BreakPage> {
           _cancelBreak();
         }
       });
+    }
+  }
+
+  void _stopTimer() {
+    _timer.cancel();
   }
 
   bool _timesUp() {
@@ -90,13 +105,40 @@ class _BreakPageState extends State<BreakPage> {
                     textStyle:
                         const TextStyle(color: Colors.white, fontSize: 20),
                   )),
-              MaterialButton(
-                onPressed: _cancelBreak,
-                color: Color.fromARGB(255, 40, 61, 248),
-                child: Icon(
-                  Icons.cancel,
-                  color: Colors.white,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Start button
+                  MaterialButton(
+                    onPressed: _startTimer,
+                    color: Color.fromARGB(255, 40, 61, 248),
+                    child: Icon(
+                      Icons.play_circle_outline_rounded,
+                      color: Colors.white,
+                    ),
+                  ),
+                  //stop button
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: MaterialButton(
+                      onPressed: _stopTimer,
+                      color: Color.fromARGB(255, 40, 61, 248),
+                      child: Icon(
+                        Icons.stop_circle_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  // cancel button
+                  MaterialButton(
+                    onPressed: _cancelBreak,
+                    color: Color.fromARGB(255, 40, 61, 248),
+                    child: Icon(
+                      Icons.cancel,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

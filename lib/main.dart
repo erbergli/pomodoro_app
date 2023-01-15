@@ -51,39 +51,49 @@ class _MainPageState extends State<MainPage> {
   final String _initialText = "Start a new Pomodoro!";
   String _promptText = "Start a new Pomodoro!";
 
-
-
   // To start the timer
   void _startPomodoroTimer() {
     if (!_timer.isActive) {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        if (_timeLeftSeconds > 0) {
-          setState(() {
-            _timeLeftSeconds--;
-          });
-        } else {
-          setState(() {
-            _timeLeftSeconds = 59;
-            _timeLeftMinutes--;
-          });
-        }
-        if (_timeLeftMinutes == 0 && _timeLeftSeconds == 0) {
-          final player = AudioCache();
-          player.play("audio/alarm.mp3");
-          setState(() {
-            _timer.cancel();
-            _timeLeftMinutes = 25;
-            _timeLeftSeconds = 0;
-          });
-          _takeBreak();
-        }
+          if (_timeLeftSeconds > 0) {
+            setState(() {
+              _timeLeftSeconds--;
+            });
+          }else{
+            setState(() {
+              _timeLeftSeconds = 59;
+              _timeLeftMinutes--;
+            });
+          }
+        
+        
+          if (_timeLeftMinutes == 0 && _timeLeftSeconds == 0) {
+            final player = AudioCache();
+            player.play("audio/alarm.mp3");
+            setState(() {
+              _timer.cancel();
+              _timeLeftMinutes = 25;
+              _timeLeftSeconds = 0;
+            });
+            _takeBreak();
+          }
+        
       });
     }
   }
 
+@override
+  void setState(VoidCallback fn) {
+    
+    if(mounted){  
+      super.setState(fn);
+    }
+    
+  }
+
   // Create a new page with different mood which will only contain the break time and functionality.
   void _takeBreak() {
-    Navigator.of(context).push(MaterialPageRoute<void>(builder: (context){
+    Navigator.of(context).push(MaterialPageRoute<void>(builder: (context) {
       return BreakPage();
     }));
   }
@@ -140,7 +150,6 @@ class _MainPageState extends State<MainPage> {
             textStyle: TextStyle(color: Colors.white),
           ),
         ),
-        
       ),
       drawer: MenuDrawer(),
       body: Center(
@@ -164,7 +173,8 @@ class _MainPageState extends State<MainPage> {
               ),
               Text(_promptText,
                   style: GoogleFonts.rowdies(
-                    textStyle: const TextStyle(color: Colors.white, fontSize: 20),
+                    textStyle:
+                        const TextStyle(color: Colors.white, fontSize: 20),
                   ))
             ],
           ),
