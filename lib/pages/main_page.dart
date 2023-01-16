@@ -48,6 +48,7 @@ class _MainPageState extends State<MainPage> {
             final player = AudioCache();
             player.play("audio/alarm.mp3");
             setState(() {
+              _resetTimer();
               _timer.cancel();
               _timeLeftMinutes = 25;
               _timeLeftSeconds = 0;
