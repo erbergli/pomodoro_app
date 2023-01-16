@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pomodoro_app/pages/edit_break_dialog.dart';
 
 class BreakPage extends StatefulWidget {
   BreakPage({super.key});
@@ -15,9 +16,13 @@ class BreakPage extends StatefulWidget {
 }
 
 class _BreakPageState extends State<BreakPage> {
+  RoundedRectangleBorder _roundedShape =
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(12));
   Timer _timer = Timer(Duration(seconds: 1), () {});
   int _timeLeftMinutes = 5;
   int _timeLeftSeconds = 0;
+  BreakEditDialog _dialogBox = BreakEditDialog(setTimer: (){},);
+
   // add buttons so that you can start timer manually if wanted
   _BreakPageState() {
     _startTimer();
@@ -47,6 +52,8 @@ class _BreakPageState extends State<BreakPage> {
           });
         }
         if (_timesUp()) {
+          final player = AudioCache();
+          player.play("audio/alarm.mp3");
           _cancelBreak();
         }
       });
@@ -65,6 +72,28 @@ class _BreakPageState extends State<BreakPage> {
     _timer.cancel();
     Navigator.of(context).popUntil((route) => route.isFirst);
     
+  }
+
+  void _setTimer(){
+    Navigator.of(context).pop();
+    setState(() {
+      _timeLeftMinutes = _dialogBox.getMins();
+    });
+    
+  }
+
+  void _editBreak(){
+    if (!_timer.isActive) {
+      _dialogBox = BreakEditDialog(
+        setTimer: _setTimer,
+      );
+      showDialog(
+        context: context,
+        builder: ((context) {
+          return _dialogBox;
+        }),
+      );
+    }
   }
 
   // void _cancel() {
@@ -113,6 +142,7 @@ class _BreakPageState extends State<BreakPage> {
                   MaterialButton(
                     onPressed: _startTimer,
                     color: Color.fromARGB(255, 40, 61, 248),
+                    shape: _roundedShape,
                     child: Icon(
                       Icons.play_circle_outline_rounded,
                       color: Colors.white,
@@ -124,6 +154,7 @@ class _BreakPageState extends State<BreakPage> {
                     child: MaterialButton(
                       onPressed: _stopTimer,
                       color: Color.fromARGB(255, 40, 61, 248),
+                      shape: _roundedShape,
                       child: Icon(
                         Icons.stop_circle_outlined,
                         color: Colors.white,
@@ -134,9 +165,23 @@ class _BreakPageState extends State<BreakPage> {
                   MaterialButton(
                     onPressed: _cancelBreak,
                     color: Color.fromARGB(255, 40, 61, 248),
+                    shape: _roundedShape,
                     child: Icon(
                       Icons.cancel,
                       color: Colors.white,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: MaterialButton(
+                      onPressed: _editBreak,
+                      minWidth: 30,
+                      color: Color.fromARGB(255, 40, 61, 248),
+                      shape: _roundedShape,
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],

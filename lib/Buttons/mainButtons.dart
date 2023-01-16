@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:pomodoro_app/Buttons/start_button.dart';
-import 'package:pomodoro_app/Buttons/stop_button.dart';
+import 'package:pomodoro_app/buttons/start_button.dart';
+import 'package:pomodoro_app/buttons/stop_button.dart';
 
 class MainButtons extends StatelessWidget {
   VoidCallback startTimer;
@@ -20,7 +20,8 @@ class MainButtons extends StatelessWidget {
     required this.startTimer,
     required this.stopTimer,
     required this.resetTimer,
-    required this.editTimer,
+    required this.editTimer
+
   });
 
   StartButton getStartButton() {
@@ -62,20 +63,21 @@ class MainButtons extends StatelessWidget {
                 Icons.settings_backup_restore_sharp,
                 color: Colors.white,
               )),
+        
         ),
         Padding(
           padding: const EdgeInsets.all(2.0),
           child: MaterialButton(
-            onPressed: editTimer,
-            shape: _roundedShape,
-            color: Colors.red,
-            minWidth: 20,
-            child: Icon(
-              Icons.edit,
-              color: Colors.white,
-            ),
-          ),
-        )
+              onPressed: editTimer,
+              minWidth: 50,
+              shape: _roundedShape,
+              color: Colors.red,
+              child: const Icon(
+                Icons.edit,
+                color: Colors.white,
+              )),
+        
+        ),
       ]),
     );
   }
