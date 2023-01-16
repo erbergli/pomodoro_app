@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:pomodoro_app/start_button.dart';
-import 'package:pomodoro_app/stop_button.dart';
+import 'package:pomodoro_app/Buttons/start_button.dart';
+import 'package:pomodoro_app/Buttons/stop_button.dart';
 
 class MainButtons extends StatelessWidget {
   VoidCallback startTimer;

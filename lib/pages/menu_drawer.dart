@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pomodoro_app/break_page.dart';
-import 'package:pomodoro_app/info_page.dart';
+import 'package:pomodoro_app/pages/break_page.dart';
+import 'package:pomodoro_app/pages/history_page.dart';
+import 'package:pomodoro_app/pages/info_page.dart';
 import 'package:pomodoro_app/main.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -47,7 +48,9 @@ class MenuDrawer extends StatelessWidget {
                 },
               ),
             ),
-            Divider(thickness: 2,),
+            Divider(
+              thickness: 2,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
@@ -57,13 +60,31 @@ class MenuDrawer extends StatelessWidget {
                   style: _style,
                 ),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: ((context) => BreakPage())));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: ((context) => BreakPage())));
                   // Navigator.of(context).pushAndRemoveUntil(
                   //   MaterialPageRoute(
                   //     builder: ((context) => BreakPage())
                   //     ), ((route) => route.isFirst)
                   // );
-                  
+                },
+              ),
+            ),
+            Divider(
+              thickness: 2,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                leading: Icon(Icons.history_rounded),
+                title: Text(
+                  "History",
+                  style: _style,
+                ),
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: ((context) => HistoryPage())),
+                      ((route) => route.isFirst));
                 },
               ),
             ),
@@ -79,17 +100,15 @@ class MenuDrawer extends StatelessWidget {
                 onTap: () {
                   // Navigator.of(context).popUntil((route) => route.isFirst);
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: ((context) => InfoPage())
-                      ), ((route) => route.isFirst)
-                  );
-                  
-
+                      MaterialPageRoute(builder: ((context) => InfoPage())),
+                      ((route) => route.isFirst));
                 },
-                
               ),
             ),
-            Divider(thickness: 2,),
+            Divider(
+              thickness: 2,
+            ),
+            
           ],
         ));
   }

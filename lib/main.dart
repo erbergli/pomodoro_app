@@ -5,10 +5,10 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pomodoro_app/break_page.dart';
-import 'package:pomodoro_app/dialog_box_edit.dart';
-import 'package:pomodoro_app/mainButtons.dart';
-import 'package:pomodoro_app/menu_drawer.dart';
+import 'package:pomodoro_app/pages/break_page.dart';
+import 'package:pomodoro_app/pages/dialog_box_edit.dart';
+import 'package:pomodoro_app/Buttons/mainButtons.dart';
+import 'package:pomodoro_app/pages/menu_drawer.dart';
 
 void main() {
   // sets the preferred orientation as to not be able to enter landscape mode
