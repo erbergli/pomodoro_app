@@ -8,12 +8,14 @@ import 'package:pomodoro_app/pages/info_page.dart';
 import 'package:pomodoro_app/main.dart';
 
 class MenuDrawer extends StatelessWidget {
+  List pomodoros = [];
+
   final _style = GoogleFonts.rowdies(
       textStyle: TextStyle(
     color: Colors.white,
     fontSize: 30,
   ));
-  MenuDrawer({super.key});
+  MenuDrawer({super.key, required this.pomodoros});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +85,7 @@ class MenuDrawer extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: ((context) => HistoryPage())),
+                      MaterialPageRoute(builder: ((context) => HistoryPage(pomodoros: pomodoros,))),
                       ((route) => route.isFirst));
                 },
               ),

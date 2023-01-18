@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pomodoro_app/pages/history_page.dart';
 
 class BreakEditDialog extends StatelessWidget {
   int _mins = 0;
   VoidCallback setTimer;
+  
   final RoundedRectangleBorder _roundShape =
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(20));
+
 
   BreakEditDialog({super.key, required this.setTimer});
 
@@ -23,7 +26,6 @@ class BreakEditDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      
       backgroundColor: Colors.blue[900],
       shape: _roundShape,
       content: Container(

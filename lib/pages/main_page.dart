@@ -8,12 +8,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pomodoro_app/pages/break_page.dart';
 import 'package:pomodoro_app/pages/dialog_box_edit.dart';
 import 'package:pomodoro_app/buttons/mainButtons.dart';
+import 'package:pomodoro_app/pages/history_page.dart';
 import 'package:pomodoro_app/pages/menu_drawer.dart';
 import 'package:pomodoro_app/widgets/minute_scroller.dart';
+import 'package:pomodoro_app/widgets/pomodoro_tile.dart';
 
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  _MainPageState mps = _MainPageState();
+
+  MainPage({super.key});
+
+  List getSavedMinuteList(){
+    return mps._savedMinutesList;
+  }
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -27,10 +35,14 @@ class _MainPageState extends State<MainPage> {
   int _savedMins = 25;
   final String _initialText = "Start a new Pomodoro!";
   String _promptText = "Start a new Pomodoro!";
+  List _savedMinutesList = [25]; 
+
+  
 
   // To start the timer
   void _startPomodoroTimer() {
-    if (!_timer.isActive) {
+    _saveMins();
+    if (!_timer.isActive && (_timeLeftMinutes != 0)) {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
           if (_timeLeftSeconds > 0) {
             setState(() {
@@ -45,6 +57,7 @@ class _MainPageState extends State<MainPage> {
         
         
           if (_timeLeftMinutes == 0 && _timeLeftSeconds == 0) {
+            HapticFeedback.vibrate();
             final player = AudioCache();
             player.play("audio/alarm.mp3");
             setState(() {
@@ -53,6 +66,7 @@ class _MainPageState extends State<MainPage> {
               _timeLeftMinutes = 25;
               _timeLeftSeconds = 0;
             });
+            _savedMinutesList.insert(0,_savedMins);
             _takeBreak();
           }
         
@@ -134,7 +148,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-      drawer: MenuDrawer(),
+      drawer: MenuDrawer(pomodoros: _savedMinutesList,),
       body: Center(
         child: Container(
           child: Column(
@@ -166,7 +180,8 @@ class _MainPageState extends State<MainPage> {
                   style: GoogleFonts.rowdies(
                     textStyle:
                         const TextStyle(color: Colors.white, fontSize: 20),
-                  ))
+                  )),
+              
             ],
           ),
         ),

@@ -7,6 +7,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pomodoro_app/pages/edit_break_dialog.dart';
+import 'package:pomodoro_app/widgets/break_tile.dart';
+import 'package:pomodoro_app/widgets/pomodoro_tile.dart';
 
 class BreakPage extends StatefulWidget {
   BreakPage({super.key});
@@ -21,7 +23,12 @@ class _BreakPageState extends State<BreakPage> {
   Timer _timer = Timer(Duration(seconds: 1), () {});
   int _timeLeftMinutes = 5;
   int _timeLeftSeconds = 0;
-  BreakEditDialog _dialogBox = BreakEditDialog(setTimer: (){},);
+
+  List breakMinutes =  [];
+
+  BreakEditDialog _dialogBox = BreakEditDialog(
+    setTimer: () {},
+  );
 
   // add buttons so that you can start timer manually if wanted
   _BreakPageState() {
@@ -30,11 +37,9 @@ class _BreakPageState extends State<BreakPage> {
 
   @override
   void setState(VoidCallback fn) {
-    
-    if(mounted){  
+    if (mounted) {
       super.setState(fn);
     }
-    
   }
 
   void _startTimer() {
@@ -43,7 +48,6 @@ class _BreakPageState extends State<BreakPage> {
         if (_timeLeftSeconds > 0) {
           setState(() {
             _timeLeftSeconds--;
-            
           });
         } else {
           setState(() {
@@ -55,6 +59,7 @@ class _BreakPageState extends State<BreakPage> {
           final player = AudioCache();
           player.play("audio/alarm.mp3");
           _cancelBreak();
+          breakMinutes.add(_dialogBox.getMins());
         }
       });
     }
@@ -71,18 +76,17 @@ class _BreakPageState extends State<BreakPage> {
   void _cancelBreak() {
     _timer.cancel();
     Navigator.of(context).popUntil((route) => route.isFirst);
-    
   }
 
-  void _setTimer(){
+  void _setTimer() {
     Navigator.of(context).pop();
     setState(() {
       _timeLeftMinutes = _dialogBox.getMins();
+      _timeLeftSeconds = 0;
     });
-    
   }
 
-  void _editBreak(){
+  void _editBreak() {
     if (!_timer.isActive) {
       _dialogBox = BreakEditDialog(
         setTimer: _setTimer,
@@ -108,6 +112,13 @@ class _BreakPageState extends State<BreakPage> {
       backgroundColor: Color.fromARGB(166, 40, 61, 248),
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white,
+          onPressed: () {
+            _cancelBreak();
+          },
+        ),
         centerTitle: true,
         title: Text(
           "Pomodoro Timer",
